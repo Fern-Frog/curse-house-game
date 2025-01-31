@@ -103,7 +103,6 @@ def display_character(character, previous_function):
     #Display character information with color-coded health based on its value.
 
     # Extract values from the dictionary
-    name = character.get("name", "Unknown")
     health = int(character.get("health", 0))
     sanity = int(character.get("sanity", 0))
 
@@ -1481,6 +1480,7 @@ def ending_path(character):
     print("\nTHE END")
     print("\nGAME OVER")
     print("\nThanks for playing!")
+    main()
 
     
 

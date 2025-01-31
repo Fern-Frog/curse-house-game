@@ -108,7 +108,6 @@ def display_character(character, previous_function):
     sanity = int(character.get("sanity", 0))
 
     # Display character info
-    print(f"Name: {name}")
     print(f"Health: {health}")
     print(f"Sanity: {sanity}")
 
@@ -620,7 +619,7 @@ def garden_path(character, previous_function):
                 print("\nHidden beneath the decaying foliage, you find a star-shaped sigil faintly glowing.")
                 pick_up = input("Do you want to pick it up? (yes/no): ").lower()
                 if pick_up == "yes":
-                    add_item("Star Sigil", "")
+                    add_item("Star Sigil", "it's faintly glowing")
                 else:
                     print("\nYou decided not to take the Star Sigil.")
             else:
@@ -1241,7 +1240,7 @@ def examine_cells_dungen(character, previous_function):
               "Its metallic surface feels warm to the touch.")
         pick_up = input("Do you want to pick it up? (yes/no): ").lower()
         if pick_up == "yes":
-            add_item("Moon Sigil")
+            add_item("Moon Sigil", "Its metallic surface feels warm to the touch")
     else:
         print("\n You already took the Moon Sigil.")
         time.sleep(2)
@@ -1285,7 +1284,7 @@ def examine_chest_dungen(character, previous_function):
                 print("Inside, you find: Protective Gear!")
                 pick_up = input("Do you want to pick it up? (yes/no): ").lower()
                 if pick_up == "yes":
-                    add_item("Protective Gear", "")
+                    add_item("Protective Gear", "A mask that fits snug on your face")
                 else:
                     print("\nYou decided not to take the Protective Gear.")
             else:
@@ -1492,7 +1491,7 @@ def main():
     print("2. Quit")
     choice = input("\nEnter your choice: ").strip()
     if choice == "1":
-        result = create_character()
+        char1 = create_character()
 
     elif choice == "2":
         print("\nThank you for playing!")
@@ -1501,7 +1500,7 @@ def main():
       
     else:
         print("\nInvalid input. Please try again.")
-    char1 = create_character()
+    
     #print(f"Character initialized: {char1}")
     print("---"*7)
     story_text = (

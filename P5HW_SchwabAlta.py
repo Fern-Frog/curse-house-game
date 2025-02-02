@@ -319,7 +319,7 @@ def combat_rat(character):
                     enemies=enemies,
                     boss_combat=False
                 )
-                if outcome:  # Exit if a valid item was used
+                if not outcome:  # Exit if the player chooses to close the backpack
                     break
                 else:
                     print("\nItem had no effect. Choose another item or exit.")
@@ -684,6 +684,8 @@ def combat_owl(character):
                     enemies=enemies,
                     boss_combat=False
                 )
+                if not outcome:  # Exit if the player chooses to close the backpack
+                 break
                 if outcome == "befriended":  # Specific case for befriending
                     print("\nYou befriended the owl!")
                     return "befriended"  # Exit combat with the owl as an ally
@@ -786,7 +788,8 @@ def look_entryway(character, previous_function):
 def examine_portrait(character, previous_function):
     story_text = ('You step closer to the portrait. The figures in the painting are blurred, '
                   'their faces smeared as if by some unseen hand. Beneath the frame, a small brass plaque reads: '
-                  '"The Eldridge Family, 1874. The year the secrets began.”')
+                  '"The Eldridge Family, 1874. The year the secrets began.”'
+                  '"Seek our legacy in the library."')
     character["has_looked_at_painting"] = True
     
     choices = [
@@ -1378,6 +1381,8 @@ def combat_final_boss(character, previous_function):
                     enemies=enemies,
                     boss_combat=False
                 )
+                if not outcome:  # Exit if the player chooses to close the backpack
+                 break
                 if outcome:  # Exit if a valid item was used
                     break
                 else:

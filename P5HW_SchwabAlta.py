@@ -1491,20 +1491,22 @@ def ending_path(character):
 
 # Main function
 def main():
-    print("\n--- Welcome to the Game ---")
-    print("1. Start Game")
-    print("2. Quit")
-    choice = input("\nEnter your choice: ").strip()
-    if choice == "1":
-        char1 = create_character()
+    while True: 
+        print("\n--- Welcome to the Game ---")
+        print("1. Start Game")
+        print("2. Quit")
+        choice = input("\nEnter your choice: ").strip()
+        if choice == "1":
+                char1 = create_character()
+                break
 
-    elif choice == "2":
-        print("\nThank you for playing!")
-        time.sleep(3)
-        exit()
+        elif choice == "2":
+                print("\nThank you for playing!")
+                time.sleep(3)
+                exit()
       
-    else:
-        print("\nInvalid input. Please try again.")
+        else:
+            print("\nInvalid input. Please try again.")
     
     #print(f"Character initialized: {char1}")
     print("---"*7)

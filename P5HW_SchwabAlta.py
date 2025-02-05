@@ -4,11 +4,27 @@
 #Create text base game using functions
 
 # import libarys
-
+import pygame
 import textwrap
 import time
 import random
 import sys
+
+# Initialize pygame mixer
+pygame.mixer.init()
+
+# Load music files
+BACKGROUND_MUSIC = "background.mp3"
+BATTLE_MUSIC = "battle.mp3"
+Final_BATTLE_MUSIC = "final_battle.mp3"
+
+def play_music(music_file, loop=True):
+    """Plays the specified music file."""
+    pygame.mixer.music.load(music_file)
+    pygame.mixer.music.play(-1 if loop else 0)  # -1 means loop indefinitely
+    
+
+
 # character create function
 def create_character():
     print("Choose a game mode:")
@@ -228,7 +244,7 @@ def front_door_path(character, previous_function):
      choices = [
          "Go the the kitchen", 
          "Go to the library", 
-         "Go to the dungeon", 
+         "Go to the basement", 
          "Look around the entryway", 
       
     ]
@@ -240,7 +256,7 @@ def front_door_path(character, previous_function):
      elif selected_option == 1:
         library_path(character)
      elif selected_option == 2:
-        dungeon_path(character)
+        basement_path(character)
      elif selected_option == 3:
         look_entryway(character,  lambda: look_entryway(character, previous_function))
      elif selected_option == 4:
@@ -248,6 +264,7 @@ def front_door_path(character, previous_function):
 
 # Combat function with rat and utensils
 def combat_rat(character):
+    play_music(BATTLE_MUSIC)
     print("\n" + "\n".join(textwrap.wrap(
         "From out of the dark corner of the room you see a huge rat scurrying toward you."
         "It stops a few paces from you sitting on their haunches and squeals. 'You dare enter my kitchen? "
@@ -338,6 +355,8 @@ def combat_rat(character):
     # Return the battle result
     if all(enemy["health"] <= 0 for enemy in enemies):
         print("\nYou have defeated all enemies!")
+        # Resume background music after battle
+        play_music(BACKGROUND_MUSIC)
         return True
     return False
         
@@ -640,6 +659,7 @@ def garden_path(character, previous_function):
 
 
 def combat_owl(character):
+    play_music(BATTLE_MUSIC)
     print("\n" + "\n".join(textwrap.wrap(
         "The owl swoops down from its perch, its talons gleaming dangerously. As it lands in front of you, its massive wings create a gust of wind that stirs the dark vines around you. "
         "'Your presence is an insult to this sacred place,' it says, preparing to attack."
@@ -688,6 +708,7 @@ def combat_owl(character):
                  break
                 if outcome == "befriended":  # Specific case for befriending
                     print("\nYou befriended the owl!")
+                    play_music(BACKGROUND_MUSIC)
                     return "befriended"  # Exit combat with the owl as an ally
                 elif outcome:  # Exit if a valid item was used
                     break
@@ -710,6 +731,7 @@ def combat_owl(character):
     # Return combat outcome
     if character["health"] > 0:
         print("\nYou defeated the owl!")
+        play_music(BACKGROUND_MUSIC)
         return "defeated"
 
 
@@ -721,7 +743,7 @@ def entryway_path(character, previous_function):
     choices = [
          "Go to the kitchen", 
          "Go to the library", 
-         "Go to the dungeon",
+         "Go to the basement",
          "Go to the front door",
          "Look around the entryway", 
        
@@ -734,7 +756,7 @@ def entryway_path(character, previous_function):
     elif selected_option == 1:
         library_path(character, lambda: entryway_path(character, previous_function))
     elif selected_option == 2:
-        dungeon_path(character, lambda: entryway_path(character, previous_function))
+        basement_path(character, lambda: entryway_path(character, previous_function))
     elif selected_option == 3:
         front_door_path(character, lambda: entryway_path(character, previous_function))
     elif selected_option == 4:
@@ -759,7 +781,7 @@ def look_entryway(character, previous_function):
         "Inspect the cloak",
         "Go to the kitchen",
         "Go to the library",
-        "Go to the dungeon",
+        "Go to the basement",
        
     ]
 
@@ -778,7 +800,7 @@ def look_entryway(character, previous_function):
     elif selected_option == 5:
         library_path(character, lambda: look_entryway(character, previous_function))  
     elif selected_option == 6:
-        dungeon_path(character, lambda: look_entryway(character, previous_function))  
+        basement_path(character, lambda: look_entryway(character, previous_function))  
    
     else:
         # Fallback for an invalid option, which shouldn't normally happen.
@@ -798,7 +820,7 @@ def examine_portrait(character, previous_function):
         "Inspect the cloak",
         "Go to the kitchen",
         "Go to the library",
-        "Go to the dungeon",
+        "Go to the basement",
         
     ]
 
@@ -815,7 +837,7 @@ def examine_portrait(character, previous_function):
     elif selected_option == 4:
         library_path(character, lambda: look_entryway(character, previous_function))  
     elif selected_option == 5:
-        dungeon_path(character, lambda: look_entryway(character, previous_function))  
+        basement_path(character, lambda: look_entryway(character, previous_function))  
    
     else:
         # Fallback for an invalid option, which shouldn't normally happen.
@@ -845,7 +867,7 @@ def examine_drawer_entryway(character, previous_function):
         "Inspect the cloak",
         "Go to the kitchen",
         "Go to the library",
-        "Go to the dungeon",
+        "Go to the basement",
      
     ]
 
@@ -863,7 +885,7 @@ def examine_drawer_entryway(character, previous_function):
     elif selected_option == 4:
         library_path(character, lambda: look_entryway(character, previous_function))  
     elif selected_option == 5:
-        dungeon_path(character, lambda: look_entryway(character, previous_function))  
+        basement_path(character, lambda: look_entryway(character, previous_function))  
   
     else:
         
@@ -880,7 +902,7 @@ def examine_rug_entryway(character, previous_function):
         "Inspect the cloak",
         "Go to the kitchen",
         "Go to the library",
-        "Go to the dungeon",
+        "Go to the basement",
        
     ]
 
@@ -897,7 +919,7 @@ def examine_rug_entryway(character, previous_function):
     elif selected_option == 4:
         library_path(character, lambda: look_entryway(character, previous_function))  
     elif selected_option == 5:
-        dungeon_path(character, lambda: look_entryway(character, previous_function))  
+        basement_path(character, lambda: look_entryway(character, previous_function))  
  
     else:
         # Fallback for an invalid option, which shouldn't normally happen.
@@ -917,7 +939,7 @@ def examine_coat_entryway(character, previous_function):
         "Open the drawer on the table",
         "Go to the kitchen",
         "Go to the library",
-        "Go to the dungeon",
+        "Go to the basement",
        
         ]
 
@@ -935,7 +957,7 @@ def examine_coat_entryway(character, previous_function):
         elif selected_option == 4:
             library_path(character, lambda: look_entryway(character, previous_function))  
         elif selected_option == 5:
-            dungeon_path(character, lambda: look_entryway(character, previous_function))  
+            basement_path(character, lambda: look_entryway(character, previous_function))  
        
         else:
             # Fallback for an invalid option, which shouldn't normally happen.
@@ -1185,9 +1207,9 @@ def tower_entry(character, previous_function):
     look_libarary(character, previous_function)
     
 
-# dungeon path
-def dungeon_path(character, previous_function):
-    story_text = ("You descend into the dungeon, the air growing colder and damper with each step."
+# basement path
+def basement_path(character, previous_function):
+    story_text = ("You descend into the basement, the air growing colder and damper with each step."
                   "The stone walls are slick, and the faint sound of dripping water echoes through the darkness."
                   "The dim light from above fades, leaving only a faint flicker from torches mounted on the walls.")
 
@@ -1199,17 +1221,17 @@ def dungeon_path(character, previous_function):
     selected_option = display_menu(story_text, choices) 
     
     if selected_option == 0:
-        look_dungen(character, lambda: look_dungeon(character, previous_function))
+        look_basement(character, lambda: look_basement(character, previous_function))
     elif selected_option == 1:
         entryway_path(character, previous_function)
     
     else:
         print("\nSomething went wrong!")
 
-# look around dungeon
-def look_dungen(character, previous_function):
+# look around basement 
+def look_basement(character, previous_function):
     story_text = ("You take a closer look at your surroundings."
-                  "The dungeon is oppressive, its cold stone walls bearing the weight of forgotten history."
+                  "The basement is oppressive, its cold stone walls bearing the weight of forgotten history."
                   "Iron-barred cells line the far walls, some with broken doors, others sealed shut by rust."
                   "Scattered across the floor are remnants of discarded tools and old, tattered cloths."
                   "In the far corner, a small weapon rack leans against the wall, its contents long abandoned "
@@ -1224,17 +1246,17 @@ def look_dungen(character, previous_function):
     selected_option = display_menu(story_text, choices)
 
     if selected_option == 0:
-        examine_cells_dungen(character, lambda: look_dungeon(character, previous_function))
+        examine_cell_basement(character, lambda: look_basement(character, previous_function))
     elif selected_option == 1:
-        examine_rack_dungen(character, lambda: look_dungeon(character, previous_function))
+        examine_rack_basement(character, lambda: look_basement(character, previous_function))
     elif selected_option == 2:
-        examine_chest_dungen(character, lambda: look_dungeon(character, previous_function))
+        examine_chest_basement(character, lambda: look_basement(character, previous_function))
     elif selected_option == 3:
         entryway_path(character, previous_function)
     else:
         print("\nSomething went wrong!")
 
-def examine_cells_dungen(character, previous_function):
+def examine_cells_basement(character, previous_function):
     
     print("\n".join(textwrap.wrap("You walk past the rows of cells, peering inside.")))
     if "Moon Sigil" not in inventory:  # Check if the moon has already been taken
@@ -1246,9 +1268,9 @@ def examine_cells_dungen(character, previous_function):
     else:
         print("\n You already took the Moon Sigil.")
         time.sleep(2)
-    look_dungen(character, previous_function)
+    look_basement(character, previous_function)
 
-def examine_rack_dungen(character, previous_function):
+def examine_rack_basement (character, previous_function):
     story_text = ("You approach the weapon rack near the wall, half-collapsed under years of neglect."
                   "Several rusted swords, maces, and shields hang in a disorganized manner, coated in grime and decay.")
     print("\n".join(textwrap.wrap(story_text, width=70)))
@@ -1263,9 +1285,9 @@ def examine_rack_dungen(character, previous_function):
     else:
         print("\n You already took the Dagger.")
         time.sleep(2)
-    look_dungen(character, previous_function)
+    look_basement(character, previous_function)
 
-def examine_chest_dungen(character, previous_function):
+def examine_chest_basement(character, previous_function):
     print("\n".join(textwrap.wrap("The chest sits before you, its wood darkened and worn by time."
                   "You see the number 3: 8 is scratched into the side of the chest.")))
     if "Protective Gear" not in inventory:
@@ -1295,7 +1317,7 @@ def examine_chest_dungen(character, previous_function):
             print("Invalid input. Please enter numbers only.")
     else:
         "The chest lays open and emptey"
-    look_dungen(character, previous_function)
+    look_basement(character, previous_function)
 
 def tower_path(character, previous_function):
     print("\n" + "\n".join(textwrap.wrap("You ascend the winding stairs of the tower, the creaking of each step echoing in the oppressive silence. "
@@ -1322,6 +1344,7 @@ def tower_path(character, previous_function):
 
 
 def combat_final_boss(character, previous_function):
+    play_music(Final_BATTLE_MUSIC)
     print("\n" + "\n".join(textwrap.wrap(
         "You ascend the winding staircase to the tower's apex. The room is shrouded in shadows, but an ominous figure steps forward. "
         "The air feels heavy with power and malice. 'You dare challenge me for the artifact?' the final boss hisses, "
@@ -1330,7 +1353,7 @@ def combat_final_boss(character, previous_function):
 
     # Initialize boss and minions in a unified list
     enemies = [
-        {"name": "Final Boss", "health": 100, "attack": (15, 25), "phase": 1}
+        {"name": "Final Boss", "health": 130, "attack": (15, 25), "phase": 1}
     ]
 
     character["health"]
@@ -1460,6 +1483,7 @@ def check_FBoss_heath(character, previous_function, enemies):
     # Check if there are still active enemies
     if all(enemy["health"] <= 0 for enemy in enemies):
         print("\nAll enemies have been defeated! The room falls silent.")
+        play_music(BACKGROUND_MUSIC)
         ending_path(character)
 
 
@@ -1491,6 +1515,10 @@ def ending_path(character):
 
 # Main function
 def main():
+
+      # Start background music
+    play_music(BACKGROUND_MUSIC)
+
     while True: 
         print("\n--- Welcome to the Game ---")
         print("1. Start Game")
@@ -1520,7 +1548,7 @@ def main():
     choices = [
         "Go to the kitchen",
         "Go to the library",
-        "Go to the dungeon",
+        "Go to the basement",
         "Go to the front door",
         "Look around the entryway",
         "Look in inventory",
@@ -1536,7 +1564,7 @@ def main():
     elif selected_option == 1:
         library_path(char1, lambda: main())
     elif selected_option == 2:
-        dungeon_path(char1, lambda: main())
+        basement_path(char1, lambda: main())
     elif selected_option == 3:
         front_door_path(char1, lambda: main())
     elif selected_option == 4:
